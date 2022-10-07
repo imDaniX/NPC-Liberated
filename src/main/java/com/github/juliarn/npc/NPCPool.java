@@ -10,7 +10,6 @@ import com.comphenix.protocol.wrappers.WrappedEnumEntityUseAction;
 import com.github.juliarn.npc.event.PlayerNPCHideEvent;
 import com.github.juliarn.npc.event.PlayerNPCInteractEvent;
 import com.github.juliarn.npc.modifier.AnimationModifier;
-import com.github.juliarn.npc.modifier.LabyModModifier;
 import com.github.juliarn.npc.modifier.MetadataModifier;
 import com.github.juliarn.npc.modifier.NPCModifier;
 import com.google.common.base.Preconditions;
@@ -96,19 +95,6 @@ public class NPCPool implements Listener {
     this.tabListRemoveTicks = tabListRemoveTicks;
 
     Bukkit.getPluginManager().registerEvents(this, plugin);
-
-    // communication with LabyMod
-    String labyModPluginChannel = LabyModModifier.LABYMOD_PLUGIN_CHANNEL.getFullKey();
-    // we might send messages on this channel
-    Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, labyModPluginChannel);
-    if (!Bukkit.getMessenger().isIncomingChannelRegistered(plugin, labyModPluginChannel)) {
-      Bukkit.getMessenger().registerIncomingPluginChannel(plugin, labyModPluginChannel,
-          (channel, player, message) -> {
-            // we don't actually handle LabyMod messages, we just register
-            // incoming messages to make sure minecraft:register is sent to the proxy,
-            // so that it will forward our messages on the LabyMod channel to the player
-          });
-    }
 
     this.addInteractListener();
     this.npcTick();
