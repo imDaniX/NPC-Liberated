@@ -4,6 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.utility.MinecraftVersion;
 import com.github.juliarn.npc.NPC;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -87,9 +88,14 @@ public class NPCModifier {
   public void send(@NotNull Iterable<? extends Player> players) {
     players.forEach(player -> {
       for (LazyPacket packetContainer : this.packetContainers) {
-        ProtocolLibrary.getProtocolManager().sendServerPacket(
-            player,
-            packetContainer.provide(this.npc, player));
+        try {
+          ProtocolLibrary.getProtocolManager().sendServerPacket(
+              player,
+              packetContainer.provide(this.npc, player)
+          );
+        } catch (InvocationTargetException e) {
+          throw new RuntimeException(e);
+        }
       }
     });
     this.packetContainers.clear();
