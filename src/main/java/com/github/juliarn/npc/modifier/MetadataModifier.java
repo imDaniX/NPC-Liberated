@@ -77,7 +77,7 @@ public class MetadataModifier extends NPCModifier {
   @NotNull
   public <T> MetadataModifier queue(int index, @NotNull T value, @NotNull Class<T> clazz) {
     return this
-        .queue(index, value, MINECRAFT_VERSION < 9 ? null : WrappedDataWatcher.Registry.get(clazz));
+        .queue(index, value, WrappedDataWatcher.Registry.get(clazz));
   }
 
   /**
@@ -140,7 +140,7 @@ public class MetadataModifier extends NPCModifier {
             Collections.emptyList(),
             input -> (input ? EnumWrappers.EntityPose.CROUCHING : EnumWrappers.EntityPose.STANDING)
                 .toNms(),
-            () -> NPCModifier.MINECRAFT_VERSION >= 14));
+            () -> true));
     /**
      * An entity metadata for modifying the skin layer state.
      */
@@ -158,7 +158,7 @@ public class MetadataModifier extends NPCModifier {
         (Class<Object>) EnumWrappers.getEntityPoseClass(),
         Collections.emptyList(),
         EnumWrappers.EntityPose::toNms,
-        () -> NPCModifier.MINECRAFT_VERSION >= 14);
+        () -> true);
 
     /**
      * The base index of the metadata in the data watcher object.

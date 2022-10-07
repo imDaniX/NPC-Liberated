@@ -83,26 +83,8 @@ public class EquipmentModifier extends NPCModifier {
       PacketContainer container = new PacketContainer(Server.ENTITY_EQUIPMENT);
       container.getIntegers().write(0, targetNpc.getEntityId());
 
-      if (MINECRAFT_VERSION < 16) {
-        if (MINECRAFT_VERSION < 9) {
-          // fix the item slot association for minecraft 1.8
-          int slotId = itemSlot.ordinal();
-          if (slotId > 0) {
-            // the main hand representation is 0, that didn't change - 1 was added as the representation
-            // of the off-hand so everything != 0 needs to be shifted one down to skip the unknown
-            // off-hand slot
-            slotId--;
-          }
-
-          container.getIntegers().write(1, slotId);
-        } else {
-          container.getItemSlots().write(0, itemSlot);
-        }
-        container.getItemModifier().write(0, equipment);
-      } else {
-        container.getSlotStackPairLists()
-            .write(0, Collections.singletonList(new Pair<>(itemSlot, equipment)));
-      }
+      container.getSlotStackPairLists()
+          .write(0, Collections.singletonList(new Pair<>(itemSlot, equipment)));
       return container;
     });
     return this;

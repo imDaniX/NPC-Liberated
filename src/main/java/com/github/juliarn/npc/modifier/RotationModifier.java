@@ -45,19 +45,8 @@ public class RotationModifier extends NPCModifier {
     // entity position
     super.queueInstantly((targetNpc, target) -> {
       PacketContainer container;
-      if (MINECRAFT_VERSION < 9) {
-        container = new PacketContainer(Server.ENTITY_TELEPORT);
-        container.getIntegers().write(0, targetNpc.getEntityId());
-
-        Location location = super.npc.getLocation();
-        container.getIntegers()
-            .write(1, (int) Math.floor(location.getX() * 32.0D))
-            .write(2, (int) Math.floor(location.getY() * 32.0D))
-            .write(3, (int) Math.floor(location.getZ() * 32.0D));
-      } else {
-        container = new PacketContainer(Server.ENTITY_LOOK);
-        container.getIntegers().write(0, targetNpc.getEntityId());
-      }
+      container = new PacketContainer(Server.ENTITY_LOOK);
+      container.getIntegers().write(0, targetNpc.getEntityId());
 
       container.getBytes()
           .write(0, yawAngle)

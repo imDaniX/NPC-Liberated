@@ -519,11 +519,12 @@ public class NPC {
         throw new IllegalArgumentException("No profile given or not completed");
       }
 
+      //noinspection deprecation
       NPC npc = new NPC(
           this.profile,
           this.location,
           this.spawnCustomizer,
-          pool.getFreeEntityId(),
+          Bukkit.getUnsafe().nextEntityId(), // We're fine with getUnsafe
           this.lookAtPlayer,
           this.imitatePlayer,
           this.usePlayerProfiles);

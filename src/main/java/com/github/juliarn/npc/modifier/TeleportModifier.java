@@ -40,15 +40,9 @@ public class TeleportModifier extends NPCModifier {
     super.queueInstantly((targetNpc, target) -> {
       PacketContainer container = new PacketContainer(Server.ENTITY_TELEPORT);
       container.getIntegers().write(0, targetNpc.getEntityId());
-      if (MINECRAFT_VERSION < 9) {
-        container.getIntegers().write(1, (int) Math.floor(location.getX() * 32.0D));
-        container.getIntegers().write(2, (int) Math.floor(location.getY() * 32.0D));
-        container.getIntegers().write(3, (int) Math.floor(location.getZ() * 32.0D));
-      } else {
-        container.getDoubles().write(0, location.getX());
-        container.getDoubles().write(1, location.getY());
-        container.getDoubles().write(2, location.getZ());
-      }
+      container.getDoubles().write(0, location.getX());
+      container.getDoubles().write(1, location.getY());
+      container.getDoubles().write(2, location.getZ());
       container.getBytes().write(0, yawAngle);
       container.getBytes().write(1, pitchAngle);
       container.getBooleans().write(0, onGround);

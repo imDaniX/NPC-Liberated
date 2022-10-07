@@ -6,7 +6,6 @@ import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode;
 import com.comphenix.protocol.wrappers.PlayerInfoData;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.github.juliarn.npc.NPC;
 import java.util.ArrayList;
@@ -91,24 +90,14 @@ public class VisibilityModifier extends NPCModifier {
       double y = targetNpc.getLocation().getY();
       double z = targetNpc.getLocation().getZ();
 
-      if (MINECRAFT_VERSION < 9) {
-        container.getIntegers()
-            .write(1, (int) Math.floor(x * 32.0D))
-            .write(2, (int) Math.floor(y * 32.0D))
-            .write(3, (int) Math.floor(z * 32.0D));
-      } else {
-        container.getDoubles()
-            .write(0, x)
-            .write(1, y)
-            .write(2, z);
-      }
+      container.getDoubles()
+          .write(0, x)
+          .write(1, y)
+          .write(2, z);
 
       container.getBytes()
           .write(0, (byte) (super.npc.getLocation().getYaw() * 256F / 360F))
           .write(1, (byte) (super.npc.getLocation().getPitch() * 256F / 360F));
-      if (MINECRAFT_VERSION < 15) {
-        container.getDataWatcherModifier().write(0, new WrappedDataWatcher());
-      }
 
       return container;
     });
@@ -125,12 +114,8 @@ public class VisibilityModifier extends NPCModifier {
   public VisibilityModifier queueDestroy() {
     super.queueInstantly((targetNpc, target) -> {
       PacketContainer container = new PacketContainer(Server.ENTITY_DESTROY);
-      if (MINECRAFT_VERSION >= 17) {
-        container.getIntLists()
-            .write(0, new ArrayList<>(Collections.singletonList(targetNpc.getEntityId())));
-      } else {
-        container.getIntegerArrays().write(0, new int[]{super.npc.getEntityId()});
-      }
+      container.getIntLists()
+          .write(0, new ArrayList<>(Collections.singletonList(targetNpc.getEntityId())));
       return container;
     });
 

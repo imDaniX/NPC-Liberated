@@ -11,7 +11,6 @@ import com.github.juliarn.npc.event.PlayerNPCHideEvent;
 import com.github.juliarn.npc.event.PlayerNPCInteractEvent;
 import com.github.juliarn.npc.modifier.AnimationModifier;
 import com.github.juliarn.npc.modifier.MetadataModifier;
-import com.github.juliarn.npc.modifier.NPCModifier;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import java.util.Collection;
@@ -143,20 +142,12 @@ public class NPCPool implements Listener {
               EnumWrappers.Hand usedHand;
               EnumWrappers.EntityUseAction action;
 
-              if (NPCModifier.MINECRAFT_VERSION >= 17) {
-                WrappedEnumEntityUseAction useAction = container.getEnumEntityUseActions().read(0);
-                // the hand is only available when not attacking
-                action = useAction.getAction();
-                usedHand = action == EnumWrappers.EntityUseAction.ATTACK
-                    ? EnumWrappers.Hand.MAIN_HAND
-                    : useAction.getHand();
-              } else {
-                // the hand is only available when not attacking
-                action = container.getEntityUseActions().read(0);
-                usedHand = action == EnumWrappers.EntityUseAction.ATTACK
-                    ? EnumWrappers.Hand.MAIN_HAND
-                    : container.getHands().optionRead(0).orElse(EnumWrappers.Hand.MAIN_HAND);
-              }
+              WrappedEnumEntityUseAction useAction = container.getEnumEntityUseActions().read(0);
+              // the hand is only available when not attacking
+              action = useAction.getAction();
+              usedHand = action == EnumWrappers.EntityUseAction.ATTACK
+                  ? EnumWrappers.Hand.MAIN_HAND
+                  : useAction.getHand();
 
               Bukkit.getScheduler().runTask(
                   NPCPool.this.plugin,
