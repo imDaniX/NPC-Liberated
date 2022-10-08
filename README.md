@@ -1,14 +1,8 @@
 # NPC-Lib
 
-Asynchronous, high-performance Minecraft NPC library for 1.8-1.18 servers.
+Asynchronous, high-performance Minecraft NPC library for 1.19 servers.
 
-This Library does only support the latest patch release of a supported version (for example 1.13.2).
-Issues with older patch versions (for example 1.13.1) won't be fixed.
-
-## Requirements
-
-This library can only be used on spigot servers higher or on version 1.8.8. The
-plugin [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) is required on your server.
+The plugin [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) is required on your server.
 
 ## How to use
 
@@ -19,21 +13,15 @@ Maven
 ```xml
 
 <repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
+  <id>jitpack.io</id>
+  <url>https://jitpack.io</url>
 </repository>
 
-<!-- latest stable release -->
-<dependency>
-    <groupId>com.github.juliarn</groupId>
-    <artifactId>npc-lib</artifactId>
-    <version>2.6-RELEASE</version>
-</dependency>
 <!-- latest build -->
 <dependency>
-    <groupId>com.github.juliarn</groupId>
-    <artifactId>npc-lib</artifactId>
-    <version>development-SNAPSHOT</version>
+  <groupId>com.github.imDaniX</groupId>
+  <artifactId>NPC-Liberated</artifactId>
+  <version>development-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -45,8 +33,6 @@ maven {
     url 'https://jitpack.io'
 }
 
-// latest stable release
-compile group: 'com.github.juliarn', name: 'npc-lib', version: '2.6-RELEASE'
 // latest build
 compile group: 'com.github.juliarn', name: 'npc-lib', version: 'development-SNAPSHOT'
 ```
@@ -56,7 +42,7 @@ Add ProtocolLib as dependency to your plugin.yml. It could look like this:
 ```yml
 name: Hub
 version: 1.0-SNAPSHOT
-api-version: "1.13"
+api-version: "1.19"
 depend: [ProtocolLib]
 author: juliarn
 main: com.github.juliarn.server.hub.ServerHub
@@ -160,10 +146,6 @@ public class ExampleNPCs implements Listener {
       // making the NPC swing its main arm
       npc.animation()
         .queue(AnimationModifier.EntityAnimation.SWING_MAIN_ARM),
-      // making the NPC play the LabyMod "dab" emote.
-      // all ids can be found here: https://docs.labymod.net/pages/server/labymod/emote_api/
-      npc.labymod()
-        .queue(LabyModModifier.LabyModAction.EMOTE, 3),
       // equipping the NPC with a diamond chestplate
       npc.equipment()
         .queue(EquipmentModifier.CHEST, new ItemStack(Material.DIAMOND_CHESTPLATE, 1)),
