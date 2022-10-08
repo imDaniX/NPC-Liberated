@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -50,14 +49,7 @@ public class MetadataModifier extends NPCModifier {
    */
   @NotNull
   public <I, O> MetadataModifier queue(@NotNull EntityMetadata<I, O> metadata, @NotNull I value) {
-    if (!metadata.getAvailabilitySupplier().get()) {
-      return this;
-    }
-
     for (EntityMetadata<I, Object> relatedMetadata : metadata.getRelatedMetadata()) {
-      if (!relatedMetadata.getAvailabilitySupplier().get()) {
-        continue;
-      }
       this.queue(relatedMetadata.getIndex(), relatedMetadata.getMapper().apply(value),
           relatedMetadata.getOutputType());
     }
@@ -139,8 +131,7 @@ public class MetadataModifier extends NPCModifier {
             (Class<Object>) EnumWrappers.getEntityPoseClass(),
             Collections.emptyList(),
             input -> (input ? EnumWrappers.EntityPose.CROUCHING : EnumWrappers.EntityPose.STANDING)
-                .toNms(),
-            () -> true));
+                .toNms()));
     /**
      * An entity metadata for modifying the skin layer state.
      */
@@ -157,8 +148,7 @@ public class MetadataModifier extends NPCModifier {
         6,
         (Class<Object>) EnumWrappers.getEntityPoseClass(),
         Collections.emptyList(),
-        EnumWrappers.EntityPose::toNms,
-        () -> true);
+        EnumWrappers.EntityPose::toNms);
 
     /**
      * The base index of the metadata in the data watcher object.
@@ -178,10 +168,6 @@ public class MetadataModifier extends NPCModifier {
      */
     private final Collection<Integer> shiftVersions;
     /**
-     * A supplier returning if the entity metadata is available for this server version.
-     */
-    private final Supplier<Boolean> availabilitySupplier;
-    /**
      * The metadata which is related to this metadata, will be applied too if this metadata is
      * applied.
      */
@@ -196,39 +182,18 @@ public class MetadataModifier extends NPCModifier {
      *                             be modified.
      * @param mapper               The mapper which maps the input value type to the writeable
      *                             output type for the data watcher object.
-     * @param availabilitySupplier A supplier returning if the entity metadata is available for this
-     *                             server version.
      * @param relatedMetadata      The metadata which is related to this metadata, will be applied
      *                             too if this metadata is applied.
      */
     @SafeVarargs
     public EntityMetadata(int baseIndex, Class<O> outputType, Collection<Integer> shiftVersions,
-        Function<I, O> mapper, Supplier<Boolean> availabilitySupplier,
+        Function<I, O> mapper,
         EntityMetadata<I, Object>... relatedMetadata) {
       this.baseIndex = baseIndex;
       this.outputType = outputType;
       this.shiftVersions = shiftVersions;
       this.mapper = mapper;
-      this.availabilitySupplier = availabilitySupplier;
       this.relatedMetadata = Arrays.asList(relatedMetadata);
-    }
-
-    /**
-     * Creates a new metadata instance.
-     *
-     * @param baseIndex       The base index of the metadata in the data watcher object.
-     * @param outputType      The output mapper class.
-     * @param shiftVersions   The versions in which the data watcher index was shifted and must be
-     *                        modified.
-     * @param mapper          The mapper which maps the input value type to the writeable output
-     *                        type for the data watcher object.
-     * @param relatedMetadata The metadata which is related to this metadata, will be applied too if
-     *                        this metadata is applied.
-     */
-    @SafeVarargs
-    public EntityMetadata(int baseIndex, Class<O> outputType, Collection<Integer> shiftVersions,
-        Function<I, O> mapper, EntityMetadata<I, Object>... relatedMetadata) {
-      this(baseIndex, outputType, shiftVersions, mapper, () -> true, relatedMetadata);
     }
 
     /**
@@ -262,14 +227,6 @@ public class MetadataModifier extends NPCModifier {
     @NotNull
     public Function<I, O> getMapper() {
       return this.mapper;
-    }
-
-    /**
-     * @return A supplier returning if the entity metadata is available for this server version.
-     */
-    @NotNull
-    public Supplier<Boolean> getAvailabilitySupplier() {
-      return this.availabilitySupplier;
     }
 
     /**
