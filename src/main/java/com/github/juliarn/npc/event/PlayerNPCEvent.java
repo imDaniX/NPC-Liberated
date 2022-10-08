@@ -39,6 +39,16 @@ public abstract class PlayerNPCEvent extends PlayerEvent {
   }
 
   /**
+   * Sends the queued data in the provided {@link NPCModifier} to the player involved in this
+   * event.
+   *
+   * @param npcModifier The {@link NPCModifier} whose data should be send
+   */
+  public void send(NPCModifier npcModifier) {
+    npcModifier.send(super.getPlayer());
+  }
+
+  /**
    * @return The npc involved in this event
    */
   public NPC getNPC() {

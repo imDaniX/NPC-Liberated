@@ -41,7 +41,7 @@
   </dependencies>
 
   <build>
-    <defaultGoal>clean package</defaultGoal>
+    <defaultGoal>clean install</defaultGoal>
 
     <plugins>
       <plugin>
@@ -68,7 +68,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version>
+        <version>3.4.1</version>
         <configuration>
           <source>${java.version}</source>
         </configuration>

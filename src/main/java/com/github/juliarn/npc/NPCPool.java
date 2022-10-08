@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Bukkit;
@@ -34,14 +33,12 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.Unmodifiable;
+import org.jetbrains.annotations.UnmodifiableView;
 
 /**
  * Represents the main management point for {@link NPC}s.
  */
 public class NPCPool implements Listener {
-
-  private static final Random RANDOM = new Random();
 
   private final Plugin plugin;
 
@@ -203,19 +200,6 @@ public class NPCPool implements Listener {
   }
 
   /**
-   * @return A free entity id which can be used for NPCs
-   */
-  protected int getFreeEntityId() {
-    int id;
-
-    do {
-      id = RANDOM.nextInt(Integer.MAX_VALUE);
-    } while (this.npcMap.containsKey(id));
-
-    return id;
-  }
-
-  /**
    * Adds the given {@code npc} to the list of handled NPCs of this pool.
    *
    * @param npc The npc to add.
@@ -280,10 +264,10 @@ public class NPCPool implements Listener {
   /**
    * Get an unmodifiable copy of all NPCs handled by this pool.
    *
-   * @return a copy of the NPCs this pool manages.
+   * @return a view of the NPCs this pool manages.
    */
   @NotNull
-  @Unmodifiable
+  @UnmodifiableView
   public Collection<NPC> getNPCs() {
     return Collections.unmodifiableCollection(this.npcMap.values());
   }

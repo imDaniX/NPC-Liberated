@@ -24,7 +24,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.Unmodifiable;
+import org.jetbrains.annotations.UnmodifiableView;
 
 /**
  * Represents a non-person player which can be spawned and is managed by a {@link NPCPool}.
@@ -171,10 +171,10 @@ public class NPC {
   /**
    * Get an immutable copy of all players which can see this npc.
    *
-   * @return a copy of all players seeing this npc.
+   * @return a view of all players seeing this npc.
    */
   @NotNull
-  @Unmodifiable
+  @UnmodifiableView
   public Collection<Player> getSeeingPlayers() {
     return Collections.unmodifiableCollection(this.seeingPlayers);
   }

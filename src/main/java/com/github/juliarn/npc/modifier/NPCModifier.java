@@ -4,14 +4,15 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.utility.MinecraftVersion;
 import com.github.juliarn.npc.NPC;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnknownNullability;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * An NPCModifier queues packets for NPC modification which can then be send to players via the
@@ -107,6 +108,15 @@ public class NPCModifier {
    */
   public void send(@NotNull Player... targetPlayers) {
     this.send(Arrays.asList(targetPlayers));
+  }
+
+  /**
+   * Sends the queued modifications to certain player
+   *
+   * @param targetPlayer the player which should see the modification
+   */
+  public void send(@NotNull Player targetPlayer) {
+    this.send(Collections.singleton(targetPlayer));
   }
 
   /**
