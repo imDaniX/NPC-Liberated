@@ -67,7 +67,7 @@ public class RotationModifier extends NPCModifier {
   @NotNull
   public RotationModifier queueLookAt(@NotNull Location location) {
     double xDifference = location.getX() - super.npc.getLocation().getX();
-    double yDifference = location.getY() - super.npc.getLocation().getY();
+    double yDifference = location.getY() - (super.npc.getLocation().getY() + 1.62D);
     double zDifference = location.getZ() - super.npc.getLocation().getZ();
 
     double r = Math

@@ -5,8 +5,8 @@ Asynchronous, high-performance Minecraft NPC library for 1.19 servers.
 The plugin [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) is required on your server.
 
 Fork was crated because of humongous size of such lib for latest versions of the game. 
-There were no changes in the logic of project. 
-The only difference is basically a size of a final jar.
+There are some little changes here and there, like fixing NPCs player following. 
+But major difference if the final jar size - it went ~85% down.
 
 ## How to use
 

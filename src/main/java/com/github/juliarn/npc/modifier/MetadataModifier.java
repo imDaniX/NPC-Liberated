@@ -6,10 +6,11 @@ import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.github.juliarn.npc.NPC;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import org.bukkit.entity.Player;
@@ -123,13 +124,13 @@ public class MetadataModifier extends NPCModifier {
     public static final EntityMetadata<Boolean, Byte> SNEAKING = new EntityMetadata<>(
         0,
         Byte.class,
-        Collections.emptyList(),
+        IntArrayList.of(),
         input -> (byte) (input ? 0x02 : 0),
         // with 1.16+, we have to change the pose too to make the NPC sneak
         new EntityMetadata<>(
             6,
             (Class<Object>) EnumWrappers.getEntityPoseClass(),
-            Collections.emptyList(),
+            IntArrayList.of(),
             input -> (input ? EnumWrappers.EntityPose.CROUCHING : EnumWrappers.EntityPose.STANDING)
                 .toNms()));
     /**
@@ -138,7 +139,7 @@ public class MetadataModifier extends NPCModifier {
     public static final EntityMetadata<Boolean, Byte> SKIN_LAYERS = new EntityMetadata<>(
         10,
         Byte.class,
-        Arrays.asList(9, 9, 10, 14, 14, 15, 17),
+        IntArrayList.of(9, 9, 10, 14, 14, 15, 17),
         input -> (byte) (input ? 0xff : 0));
     /**
      * An entity metadata for modifying the pose.
@@ -147,7 +148,7 @@ public class MetadataModifier extends NPCModifier {
     public static final EntityMetadata<EnumWrappers.EntityPose, Object> POSE = new EntityMetadata<>(
         6,
         (Class<Object>) EnumWrappers.getEntityPoseClass(),
-        Collections.emptyList(),
+        IntArrayList.of(),
         EnumWrappers.EntityPose::toNms);
 
     /**
@@ -166,7 +167,7 @@ public class MetadataModifier extends NPCModifier {
     /**
      * The versions in which the data watcher index was shifted and must be modified.
      */
-    private final Collection<Integer> shiftVersions;
+    private final IntCollection shiftVersions;
     /**
      * The metadata which is related to this metadata, will be applied too if this metadata is
      * applied.
@@ -186,7 +187,7 @@ public class MetadataModifier extends NPCModifier {
      *                             too if this metadata is applied.
      */
     @SafeVarargs
-    public EntityMetadata(int baseIndex, Class<O> outputType, Collection<Integer> shiftVersions,
+    public EntityMetadata(int baseIndex, Class<O> outputType, IntCollection shiftVersions,
         Function<I, O> mapper,
         EntityMetadata<I, Object>... relatedMetadata) {
       this.baseIndex = baseIndex;
@@ -204,7 +205,7 @@ public class MetadataModifier extends NPCModifier {
      */
     public int getIndex() {
       return this.baseIndex + Math.toIntExact(
-          this.shiftVersions.stream().filter(minor -> NPCModifier.MINECRAFT_VERSION >= minor)
+          this.shiftVersions.intStream().filter(minor -> NPCModifier.MINECRAFT_VERSION >= minor)
               .count());
     }
 

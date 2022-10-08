@@ -192,7 +192,7 @@ public class NPCPool implements Listener {
           }
 
           if (npc.isShownFor(player) && npc.isLookAtPlayer() && distance <= this.actionDistance) {
-            npc.rotation().queueLookAt(playerLoc).send(player);
+            npc.rotation().queueLookAt(player.getEyeLocation()).send(player);
           }
         }
       }
